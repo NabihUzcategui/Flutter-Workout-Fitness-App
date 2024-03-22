@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../common/color_extension.dart';
+import '../../common/common.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
@@ -60,17 +60,77 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             height: media.height,
             fit: BoxFit.cover,
           ),
-          PageView.builder(
+          SafeArea(
+            child: PageView.builder(
+              controller: pageController,
               itemCount: pageArr.length,
               itemBuilder: (context, index) {
-                final pObj = pageArr[index] as Map ?? {};
+                final pObj = pageArr[index] as Map? ?? {};
 
                 return Column(
                   children: [
-                    Text(""),
+                    Text(
+                      pObj["title"].toString(),
+                      style: TextStyle(
+                        color: TColor.primary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: media.width * 0.1),
+                    Image.asset(
+                      pObj["image"].toString(),
+                      width: media.width * 0.8,
+                      height: media.width * 0.8,
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(height: media.width * 0.45),
+                    Text(
+                      pObj["subtitle"].toString(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: TColor.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 );
-              })
+              },
+            ),
+          ),
+          Column(
+            children: [
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: pageArr.map((pObj) {
+                  var index = pageArr.indexOf(pObj);
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: selectedPage == index
+                          ? TColor.white
+                          : TColor.white.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  );
+                }).toList(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 25,
+                  vertical: 20,
+                ),
+                child: RoundButton(
+                  title: 'Start',
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
